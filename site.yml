@@ -35,10 +35,17 @@
     pacman:
       name: ["nodejs", "npm"]
       state: present
-    become: yes
+    become: true
+    become_user: root
 
   - name: Install node version manager
-    npm: name=n
+    npm:
+      name: n
+      global: yes
+    become: true
+    become_user: root
 
   - name: Node v20
-    shell: n 20
+    become: true
+    become_user: root
+    shell: /usr/bin/n 20
