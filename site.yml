@@ -1,0 +1,21 @@
+---
+
+- hosts: localhost
+  become: true
+  tasks:
+  - name: Clone dotfiles
+    ansible.builtin.git:
+      repo: 'https://github.com/Z-xus/dots'
+      dest: '~/'
+
+
+  - name: install zsh
+    package: name=zsh
+
+  - name: Change shell
+    shell: chsh -s `which zsh`
+
+  - name: Source zsh
+    shell: source ~/.zshrc
+    args:
+      executable: /bin/zsh
