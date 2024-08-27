@@ -2,20 +2,43 @@
 
 - hosts: localhost
   become: true
+  become_user: zxus
   tasks:
+
+  - name: Check dotfiles dir already exists
+    ansible.builtin.stat:
+      path: ~/dots
+    register: dotfiles_dir
+
   - name: Clone dotfiles
     ansible.builtin.git:
       repo: 'https://github.com/Z-xus/dots'
       dest: '~/'
+    when: not dotfiles_dir.stat.exists
 
 
   - name: install zsh
     package: name=zsh
 
   - name: Change shell
-    shell: chsh -s `which zsh`
+    become: true
+    user:
+      name: zxus
+      shell: /usr/bin/zsh
 
   - name: Source zsh
     shell: source ~/.zshrc
     args:
       executable: /bin/zsh
+
+  - name: Install node
+    pacman:
+      name: ["nodejs", "npm"]
+      state: present
+    become: yes
+
+  - name: Install node version manager
+    npm: name=n
+
+  - name: Node v20
+    shell: n 20
