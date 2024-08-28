@@ -3,6 +3,21 @@
 - hosts: localhost
   become: true
   become_user: zxus
+
+  pre_tasks:
+  - name: Update cache
+    package:
+      update_cache: true
+    become: true
+    become_user: root
+
+  - name: Update keys
+    package:
+      name: archlinux-keyring
+      state: latest
+    become: true
+    become_user: root
+
   tasks:
 
   - name: Check dotfiles dir already exists
