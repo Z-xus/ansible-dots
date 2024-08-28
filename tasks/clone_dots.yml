@@ -1,0 +1,10 @@
+- name: Check dotfiles dir already exists
+  ansible.builtin.stat:
+    path: ~/dots
+  register: dotfiles_dir
+
+- name: Clone dotfiles
+  ansible.builtin.git:
+    repo: 'https://github.com/Z-xus/dots'
+    dest: '~/'
+  when: not dotfiles_dir.stat.exists

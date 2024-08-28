@@ -1,0 +1,12 @@
+- name: Update cache
+  package:
+    update_cache: true
+  become: true
+  become_user: root
+
+- name: Update arch-keys
+  package:
+    name: archlinux-keyring
+    state: latest
+  become: true
+  become_user: root
