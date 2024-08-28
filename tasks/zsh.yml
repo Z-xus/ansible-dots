@@ -1,13 +1,19 @@
 - name: install zsh
   package: name=zsh
+  tags:
+  - zsh
 
 - name: Change shell
   become: true
   user:
     name: zxus
     shell: /usr/bin/zsh
+  tags:
+  - zsh
 
 - name: Source zsh
   shell: source ~/.zshrc
   args:
     executable: /bin/zsh
+  tags:
+  - zsh

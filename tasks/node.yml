@@ -11,8 +11,13 @@
     global: yes
   become: true
   become_user: root
+  tags:
+  - node
 
 - name: Node v20
   become: true
   become_user: root
   shell: /usr/bin/n 20
+  tags:
+  - node
+  - n

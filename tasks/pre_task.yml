@@ -3,6 +3,9 @@
     update_cache: true
   become: true
   become_user: root
+  tags:
+  - update
+  - dotfiles
 
 - name: Update arch-keys
   package:
@@ -10,3 +13,6 @@
     state: latest
   become: true
   become_user: root
+  tags:
+  - update
+  - dotfiles
