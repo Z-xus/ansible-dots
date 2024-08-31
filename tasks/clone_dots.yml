@@ -1,30 +1,22 @@
-# - name: Check dotfiles dir already exists
-#   ansible.builtin.stat:
-#     path: ~/dots
-#   register: dotfiles_dir
-#
-# - name: Clone dotfiles
-#   ansible.builtin.git:
-#     repo: 'https://github.com/Z-xus/dots'
-#     dest: '~/'
-#   when: not dotfiles_dir.stat.exists
+- name: Check if yadm is installed
+  ansible.builtin.package:
+    name: yadm
+    state: present
+  become: true
 
-- name: Check if dotfiles directory already exists
+- name: Check if yadm is initialized
   ansible.builtin.stat:
-    path: ~/dots
-  register: dotfiles_dir
+    path: ~/
+  register: yadm_initialized
 
-- name: Mark /home/zxus as a safe Git directory
-  command: git config --global --add safe.directory /home/zxus
+- name: Clone dotfiles repository with yadm
+  command: yadm clone git@github.com:Z-xus/.dotfiles.git
+  when: not yadm_initialized.stat.exists
   become: true
   become_user: zxus
-  when: not dotfiles_dir.stat.exists
 
-- name: Clone dotfiles
-  ansible.builtin.git:
-    repo: 'https://github.com/Z-xus/dots'
-    dest: '~/dots'
-    version: 'main'
-  when: not dotfiles_dir.stat.exists
+- name: Update yadm submodules
+  command: yadm submodule update --init --recursive
   become: true
   become_user: zxus
+  when: yadm_initialized.stat.exists
