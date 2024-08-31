@@ -1,10 +1,8 @@
 ---
 
 - hosts: localhost
-  vars:
-    source_key: "./.ssh/id_rsa"
-    dest_key: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa"
-    personal: "{{ lookup('env', 'HOME') }}/Personal"
+  vars_files:
+    - ssh_keys.yml
   become: true
   become_user: zxus
 
@@ -12,6 +10,7 @@
     - import_tasks: tasks/pre_task.yml
 
   tasks:
-  - import_tasks: tasks/clone_dots.yml
-  - import_tasks: tasks/zsh.yml
-  - import_tasks: tasks/node.yml
+    - import_tasks: tasks/ssh.yml
+    - import_tasks: tasks/clone_dots.yml
+    - import_tasks: tasks/zsh.yml
+    - import_tasks: tasks/node.yml

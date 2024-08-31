@@ -1,10 +1,30 @@
-- name: Check dotfiles dir already exists
+# - name: Check dotfiles dir already exists
+#   ansible.builtin.stat:
+#     path: ~/dots
+#   register: dotfiles_dir
+#
+# - name: Clone dotfiles
+#   ansible.builtin.git:
+#     repo: 'https://github.com/Z-xus/dots'
+#     dest: '~/'
+#   when: not dotfiles_dir.stat.exists
+
+- name: Check if dotfiles directory already exists
   ansible.builtin.stat:
     path: ~/dots
   register: dotfiles_dir
 
+- name: Mark /home/zxus as a safe Git directory
+  command: git config --global --add safe.directory /home/zxus
+  become: true
+  become_user: zxus
+  when: not dotfiles_dir.stat.exists
+
 - name: Clone dotfiles
   ansible.builtin.git:
     repo: 'https://github.com/Z-xus/dots'
-    dest: '~/'
+    dest: '~/dots'
+    version: 'main'
   when: not dotfiles_dir.stat.exists
+  become: true
+  become_user: zxus

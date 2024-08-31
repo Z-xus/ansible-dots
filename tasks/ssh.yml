@@ -1,0 +1,39 @@
+- name: Ensure .ssh directory exists
+  file:
+    path: "{{ ansible_env.HOME }}/.ssh"
+    mode: 0700
+    state: directory
+  tags:
+    - dotfiles
+    - install
+    - ssh
+
+- name: Install SSH private key
+  copy:
+    content: "{{ ssh_private_key }}"
+    dest: "{{ ansible_env.HOME }}/.ssh/id_rsa"
+    mode: 0600
+  tags:
+    - dotfiles
+    - install
+    - ssh
+
+- name: Install SSH public key
+  copy:
+    content: "{{ ssh_public_key }}"
+    dest: "{{ ansible_env.HOME }}/.ssh/id_rsa.pub"
+    mode: 0644
+  tags:
+    - dotfiles
+    - install
+    - ssh
+
+- name: Set authorized key from file
+  authorized_key:
+    user: "{{ ansible_env.USER }}"
+    state: present
+    key: "{{ ssh_public_key }}"
+  tags:
+    - dotfiles
+    - install
+    - ssh
