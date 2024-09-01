@@ -3,11 +3,14 @@
 - hosts: localhost
   vars_files:
     - ssh_keys.yml
+  vars:
+    github_username: "Z-xus"
+    dotfiles_repo: ".dotfiles"
   become: true
   become_user: zxus
 
   pre_tasks:
-    - import_tasks: tasks/pre_task.yml
+    - import_tasks: tasks/update.yml
 
   tasks:
     - import_tasks: tasks/ssh.yml

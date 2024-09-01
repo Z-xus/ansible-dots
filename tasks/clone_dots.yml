@@ -10,7 +10,7 @@
   register: yadm_initialized
 
 - name: Clone dotfiles repository with yadm
-  command: yadm clone git@github.com:Z-xus/.dotfiles.git
+  command: yadm clone git@github.com:{{ github_username }}/{{ dotfiles_repo }}.git
   when: not yadm_initialized.stat.exists
   become: true
   become_user: zxus
