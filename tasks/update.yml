@@ -18,3 +18,19 @@
   - update
   - dotfiles
   when: ansible_facts['os_family'] == "Archlinux"
+
+- name: Install dependencies
+  package:
+    name:
+      - git
+      - yadm
+      - curl
+      - neovim
+      - fzf
+    state: latest
+  become: true
+  become_user: root
+  tags:
+  - update
+  - dotfiles
+  when: ansible_facts['os_family'] == "Archlinux"
